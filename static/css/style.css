@@ -1,0 +1,12 @@
+* {
+  /* outline: 1px solid red;  */
+
+}
+
+.left {
+  /* border-right: 2.5px solid black;  */
+}
+
+.right {
+  border-left: 5px solid black; 
+}

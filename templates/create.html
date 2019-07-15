@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Create</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/e2cd4330ca.js"></script>
+</head>
+<body>
+  <div class="jumbotron">
+    <h1 class="float-left">Add a New User</h1>
+    <a class="fas fa-sign-out-alt fa-3x d-inline float-right ml-3" href='/'></a>
+    <a class="fas fa-home fa-3x d-inline float-right" href='/users'></a>
+  </div>
+
+  <div class="container">
+    <form action="/users/new" method="POST">
+      <div class="form-group">
+        <label for="first_name">First Name:</label>
+        <input type="text" class="form-control" id="first_name" name="fname" value="{{session['register-dict']['fn']}}">
+        {% with errors = get_flashed_messages(category_filter=["fname"]) %}
+          {% if errors %}
+            {%- for msg in errors %}
+              <small class="text-danger">{{ msg }}</small>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last Name:</label>
+        <input type="text" class="form-control" id="last_name" name="lname" value="{{session['register-dict']['ln']}}">
+        {% with errors = get_flashed_messages(category_filter=["lname"]) %}
+          {% if errors %}
+            {%- for msg in errors %}
+              <small class="text-danger">{{ msg }}</small>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Email:</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" value="{{session['register-dict']['em']}}">
+        {% with errors = get_flashed_messages(category_filter=["email"]) %}
+          {% if errors %}
+            {%- for msg in errors %}
+              <small class="text-danger">{{ msg }}</small>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+      <div class="form-group">
+        <label for="pw-input">Password:</label>
+        <input type="password" class="form-control" id="pw-input" aria-describedby="pwHelp" name="password">
+        {% with errors = get_flashed_messages(category_filter=["password"]) %}
+          {% if errors %}
+            {%- for msg in errors %}
+              <small class="text-danger">{{ msg }}</small>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <div class="form-group">
+        <label for="user_level">User Level:</label>
+        <select class="form-control" id="user_level" name="user_level">
+          <option selected>User</option>
+          <option value="Administrator">Administrator</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-success float-right">Register</button>
+    </form>
+  </div>
+
+
+</body>
+</html>

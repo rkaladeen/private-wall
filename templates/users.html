@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Read (All)</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/e2cd4330ca.js"></script>
+</head>
+<body>
+
+  <div class="jumbotron">
+    <h1 class="float-left">Admin</h1>
+    <a class="fas fa-sign-out-alt fa-3x d-inline float-right ml-3" href='/'></a>
+    
+  </div>
+  
+  <div class="container">
+    <div class="validations">
+      {% with errors = get_flashed_messages(category_filter=["user-add"]) %}
+        {% if errors %}
+          {%- for msg in errors %}
+            <h4 class="text-success">{{ msg }}</h4>
+          {% endfor -%}
+        {% endif %}
+      {% endwith %}
+      {% with errors = get_flashed_messages(category_filter=["user-delete"]) %}
+        {% if errors %}
+          {%- for msg in errors %}
+            <h4 class="text-danger">{{ msg }}</h4>
+          {% endfor -%}
+        {% endif %}
+      {% endwith %}
+      {% with errors = get_flashed_messages(category_filter=["user-update"]) %}
+        {% if errors %}
+          {%- for msg in errors %}
+            <h4 class="text-warning">{{ msg }}</h4>
+          {% endfor -%}
+        {% endif %}
+      {% endwith %}
+    </div>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Admin</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in all_users %}
+          <tr>
+            <th scope="row">{{user.id}}</th>
+            <td>{{user.first_name}} {{user.last_name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.is_admin}}</td>
+            <td>{{user.created_at}}</td>
+            <td>
+              <a class='d-inline btn btn-sm btn-primary' href='/users/{{user.id}}'>Show</a>
+              <p class='d-inline'></p>
+              <a class='d-inline btn btn-sm btn-secondary' href='/update/{{user.id}}'>Edit</a>
+              <p class='d-inline'></p>
+              <a class='d-inline btn btn-sm btn-danger' href='/users/{{user.id}}/destroy'>Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <a class='d-inline btn btn-lg btn-primary float-left mt-3' href='/create'>Add a New User</a>
+  </div>
+
+</body>
+</html>
