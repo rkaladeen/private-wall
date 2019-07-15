@@ -304,6 +304,17 @@ def delete(user_id):
     return redirect("/users")
   return redirect("/")
 
+@app.route("/email", methods=['POST'])
+def email():
+  found = False
+  mysql = connectToMySQL('cd_mysql_flask')
+  query = "SELECT email FROM users WHERE email = %(em)s;"
+  data = { "em" : request.form['email'] }
+  results = mysql.query_db(query, data)
+  if results:
+    found = True
+  return render_template('partials/email.html', found = found)
+
 if __name__ == "__main__":
   app.run(debug=True)
 
