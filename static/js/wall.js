@@ -12,3 +12,27 @@ $(document).ready(function(){
   })
 })
 
+$(document).ready(function(){
+  $('#username').keyup(function(){
+    var data = $("#username-search").serialize() // capture all the data in the form in the variable data
+    
+    $.ajax({
+      method: "GET", // we are using a post request here, but this could also be done with a get
+      url: "/usersearch",
+      data: data
+    })
+    .done(function(res){
+      $('#search').html(res) // manipulate the dom when the response comes back
+      if (data != "username="){
+        $('#search').addClass('d-inline')
+      }else{
+        $('#search').removeClass('d-inline')
+      }
+    })
+    console.log(data);
+    
+  })
+  
+})
+
+

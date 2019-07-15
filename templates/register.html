@@ -6,77 +6,100 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Create</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  
+  <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
   <script src="https://kit.fontawesome.com/e2cd4330ca.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="{{ url_for('static', filename='js/wall.js') }}"></script>
 </head>
 <body>
-  <div class="jumbotron">
-    <h1 class="float-left">Registration</h1>
+  <div class="jumbotron pt-2">
+    <h1 class="float-left">Welcome to the Wall</h1>
     <a class="fas fa-home fa-3x d-inline float-right" href='/'></a>
   </div>
 
   <div class="container">
-    <form action="/registration" method="POST" id="regForm">
-      <div class="form-group">
-        <label for="first_name">First Name:</label>
-        <input type="text" class="form-control" id="first_name" name="fname" value="{{session['register-dict']['fn']}}">
-        {% with errors = get_flashed_messages(category_filter=["fname"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor -%}
-          {% endif %}
-        {% endwith %}
+    <div class="row">
+      <div class="left-pane col-xs-6 col-md-6">
+        <h4 class="d-inline">Register Here!</h4>
+        <form action="/registration" method="POST" id="regForm">
+          <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" class="form-control col-6" id="first_name" name="fname" value="{{session['register-dict']['fn']}}">
+            {% with errors = get_flashed_messages(category_filter=["fname"]) %}
+              {% if errors %}
+                {%- for msg in errors %}
+                  <small class="text-danger">{{ msg }}</small>
+                {% endfor -%}
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" class="form-control col-6" id="last_name" name="lname" value="{{session['register-dict']['ln']}}">
+            {% with errors = get_flashed_messages(category_filter=["lname"]) %}
+              {% if errors %}
+                {%- for msg in errors %}
+                  <small class="text-danger">{{ msg }}</small>
+                {% endfor -%}
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control col-6" id="email" aria-describedby="emailHelp" name="email" value="{{session['register-dict']['em']}}">
+            <div id="emailMsg"></div> 
+            {% with errors = get_flashed_messages(category_filter=["email"]) %}
+              {% if errors %}
+                {%- for msg in errors %}
+                  <small class="text-danger">{{ msg }}</small>
+                {% endfor -%}
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="form-group">
+            <label for="pw-input">Password:</label>
+            <input type="password" class="form-control col-6" id="pw-input" aria-describedby="pwHelp" name="password">
+            {% with errors = get_flashed_messages(category_filter=["password"]) %}
+              {% if errors %}
+                {%- for msg in errors %}
+                  <small class="text-danger" id="pwHelp">{{ msg }}</small>
+                {% endfor -%}
+              {% endif %}
+            {% endwith %}
+          </div>
+          <div class="form-group">
+            <label for="pw-input">Confirm Password:</label>
+            <input type="password" class="form-control col-6" id="pw-input-confirm" aria-describedby="pwHelp" name="password-confirm">
+            {% with errors = get_flashed_messages(category_filter=["pw-confirm"]) %}
+              {% if errors %}
+                {%- for msg in errors %}
+                  <small class="text-danger" id="pwHelp">{{ msg }}</small>
+                {% endfor -%}
+              {% endif %}
+            {% endwith %}
+          </div>
+          <button type="submit" class="btn btn-success">Register</button>
+        </form>
       </div>
-      <div class="form-group">
-        <label for="last_name">Last Name:</label>
-        <input type="text" class="form-control" id="last_name" name="lname" value="{{session['register-dict']['ln']}}">
-        {% with errors = get_flashed_messages(category_filter=["lname"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor -%}
-          {% endif %}
-        {% endwith %}
+  
+      <div class="right-pane col-xs-6 col-md-6">
+        <h4 class="d-inline">Find your friends by Name!</h4>
+        
+          <form class="form-inline mt-2" id="username-search" method="GET">
+            <div class="input-group dropdown">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                  <i class="fas fa-search"></i>
+                </span>
+              </div>
+              <input type="text" class="form-control dropdown-toggle" name="username" placeholder="Search" id="username" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">   
+              <div class="dropdown-menu" id="search" aria-labelledby="username"></div>          
+            </div>
+            
+          </form>
+        
       </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" value="{{session['register-dict']['em']}}">
-        <div id="emailMsg"></div> 
-        {% with errors = get_flashed_messages(category_filter=["email"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor -%}
-          {% endif %}
-        {% endwith %}
-      </div>
-      <div class="form-group">
-        <label for="pw-input">Password:</label>
-        <input type="password" class="form-control" id="pw-input" aria-describedby="pwHelp" name="password">
-        {% with errors = get_flashed_messages(category_filter=["password"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor -%}
-          {% endif %}
-        {% endwith %}
-      </div>
-      <div class="form-group">
-        <label for="pw-input">Confirm Password:</label>
-        <input type="password" class="form-control" id="pw-input-confirm" aria-describedby="pwHelp" name="password-confirm">
-        {% with errors = get_flashed_messages(category_filter=["pw-confirm"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor -%}
-          {% endif %}
-        {% endwith %}
-      </div>
-      <button type="submit" class="btn btn-success float-right">Register</button>
-    </form>
+    </div>
   </div>
 
 

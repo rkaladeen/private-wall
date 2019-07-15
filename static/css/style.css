@@ -2,11 +2,32 @@
   /* outline: 1px solid red;  */
 
 }
-
-.left {
-  /* border-right: 2.5px solid black;  */
+  /* Register.html */
+.left-pane {
+  height: 500px;
+  border-right: 2.5px solid black; 
+  overflow: visible;
+  display: inline-block;
 }
 
-.right {
-  border-left: 5px solid black; 
+.right-pane {
+  height: 500px;
+  border-left: 2.5px solid black; 
+  overflow: visible;
+  display: inline-block;
+}
+
+  /* Welcome.html */
+.left-pane-messages {
+  height: 500px;
+  border-right: 2.5px solid black; 
+  overflow-y: auto;
+  display: inline-block;
+}
+
+.right-pane-friends {
+  height: 500px;
+  border-left: 2.5px solid black; 
+  overflow-y: auto;
+  display: inline-block;
 }

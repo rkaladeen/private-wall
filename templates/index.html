@@ -6,34 +6,36 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Login</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   
+  <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
   <script src="https://kit.fontawesome.com/e2cd4330ca.js"></script>
 </head>
 <body>
-  <div class="jumbotron">
+  <div class="jumbotron pt-2">
     <h1 class="float-left">Login Here</h1>
   </div>
 
   <div class="container">
-    <form action="/login" method="POST">
-      <div class="form-group">
-        <label for="user_email">Email:</label>
-        <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp" name="login-email" value="{{ session['logged_in']['user_email'] }}">
-      </div>
-      <div class="form-group">
-        <label for="pw-input">Password:</label>
-        <input type="password" class="form-control" id="pw-input" aria-describedby="pwHelp" name="login-password">
-        {% with errors = get_flashed_messages(category_filter=["failed"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </div>
-      <button type="submit" class="btn btn-success float-left mr-1">Login</button>
-      <a class="btn btn-secondary float-left" href="/register">Register</a>
-    </form>
+    <div class="login col-xs-6 col-md-6">
+      <form action="/login" method="POST">
+        <div class="form-group">
+          <label for="user_email">Email:</label>
+          <input type="email" class="form-control" id="user_email" aria-describedby="emailHelp" name="login-email" value="{{ session['logged_in']['user_email'] }}">
+        </div>
+        <div class="form-group">
+          <label for="pw-input">Password:</label>
+          <input type="password" class="form-control" id="pw-input" aria-describedby="pwHelp" name="login-password">
+          {% with errors = get_flashed_messages(category_filter=["failed"]) %}
+            {% if errors %}
+              {%- for msg in errors %}
+                <small class="text-danger">{{ msg }}</small>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+        <button type="submit" class="btn btn-success float-left mr-1">Login</button>
+        <a class="btn btn-secondary float-left" href="/register">Register</a>
+      </form>
+    </div>
   </div>
 </body>
 </html>

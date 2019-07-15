@@ -11,7 +11,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 PW_REGEX = re.compile(r'^(?=.*[A-Z])(?=.*\d)[a-zA-Z]\w{7,14}$')
 ALL_LETTERS_REGEX = re.compile(r'^[A-Za-z]{1,}$')
 
-################################## Messaging Application  ################################
+######################### Messaging Application  ###########################
 @app.route("/send", methods=['POST'])
 def send():
   is_vaild = True
@@ -50,7 +50,7 @@ def delMessage(message_id):
   return redirect("/")
 
 
-####################################### LOGIN ##########################################  
+################################## LOGIN ##################################  
 @app.route("/")
 def index():
   return render_template("index.html")
@@ -100,6 +100,7 @@ def login():
   flash("The email or password you entered is incorrect, please try again!", 'failed')
   return redirect("/") # Is condition are false, user is redirected to login page (index.html)
 
+
 @app.route("/welcome")
 def welcome():
   if session['logged_in']['is_logged_in']:
@@ -110,7 +111,7 @@ def welcome():
     all_users = mysql.query_db(user_query, data) 
 
     ############# Add query to render messages ###################
-    message_query = "SELECT users.first_name, messages.id, messages.sender_id , messages.message, messages.created_at FROM users LEFT JOIN messages ON users.id = recipient_id WHERE recipient_id = %(user_id)s ORDER BY users.first_name ASC;"
+    message_query = "SELECT users.first_name, messages.id, messages.sender_id , messages.message, messages.created_at FROM users LEFT JOIN messages ON users.id = recipient_id WHERE recipient_id = %(user_id)s ORDER BY messages.created_at DESC;"
     message_data = { "user_id" : session['logged_in']['user_id'] }
     
     mysql = connectToMySQL('cd_mysql_flask')
@@ -135,6 +136,7 @@ def welcome():
     return render_template("welcome.html", users = all_users, messages = my_messages) 
   return redirect("/") # Redirects to index if user is not logged in
 
+############################## REGISTER ###############################
 @app.route("/register")
 def register():
   return render_template("register.html")
@@ -181,8 +183,31 @@ def registration():
   }
   return redirect("/register")
 
+@app.route("/email", methods=['POST'])
+def email():
+  found = False
+  mysql = connectToMySQL('cd_mysql_flask')
+  query = "SELECT email FROM users WHERE email = %(em)s;"
+  data = { "em" : request.form['email'] }
+  results = mysql.query_db(query, data)
+  if results:
+    found = True
+  return render_template('partials/email.html', found = found)
 
-################################# ADMINISTRATIVE  ###################################  
+@app.route("/usersearch")
+def search():
+  if request.args.get('username') != "":
+    mysql = connectToMySQL("cd_mysql_flask")
+    query = "SELECT * FROM users WHERE first_name LIKE %%(name)s;"
+    data = { "name" : request.args.get('username') + "%" }
+    results = mysql.query_db(query, data)
+    print("TESTSTSTSTST",request.args.get('username'))
+    return render_template("partials/search.html", users = results)
+  return render_template("partials/search.html")
+  
+  
+
+########################### ADMINISTRATIVE  ############################  
 
 @app.route("/users")
 def users():
@@ -303,17 +328,6 @@ def delete(user_id):
     flash("User Removed!", 'user-delete')
     return redirect("/users")
   return redirect("/")
-
-@app.route("/email", methods=['POST'])
-def email():
-  found = False
-  mysql = connectToMySQL('cd_mysql_flask')
-  query = "SELECT email FROM users WHERE email = %(em)s;"
-  data = { "em" : request.form['email'] }
-  results = mysql.query_db(query, data)
-  if results:
-    found = True
-  return render_template('partials/email.html', found = found)
 
 if __name__ == "__main__":
   app.run(debug=True)

@@ -1,0 +1,7 @@
+{% if users != () %}
+  {% for key in users: %}
+    <small class="dropdown-item">{{key['first_name']}}</small>
+  {% endfor %}
+{% elif users == (): %}
+  <small class="dropdown-item"> Friend does not exist</small>
+{% endif %}

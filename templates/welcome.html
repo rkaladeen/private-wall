@@ -17,68 +17,70 @@
     <h3 class="float-right mt-2">Welcome, {{ session['logged_in']['user_name'] }}!</h3>
   </div>
   <div class="container">
-    <!-- Left Screen -->
-    <div class="left col-6 float-left">
-      <h4><span class="text-success">{{ session['logged_in']['messages_rec'] }}</span>
-        Message(s) for You</h4>
-      <div class="validations">
-        {% with errors = get_flashed_messages(category_filter=["message-delete"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-danger">{{ msg }}</small>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </div>
-      {% for message in messages: %}
-      <div class="container row">
-        <div class="form-group d-inline col-8">
-          <p class="">{{ message['first_name'] }} said 
-            <span class="text-info">({{ message['created_at'] }}):</span>
-          </p>
-          <p class="ml-4">"{{ message['message'] }}"</p>
-        </div>  
-        <!-- <a href="#" class="fas fa-reply d-inline fa-2x text-secondary col-1 mt-4"></a> -->
-        <a href="/delete-message/{{ message['id'] }}" class="fas fa-trash-alt d-inline fa-2x text-danger col-4 mt-4"></a>
-      </div>
-      {% endfor %}
-
-    </div>
-    <!-- Right Screen -->
-    <div class="right col-6 float-left">
-      <h4>Send Messages</h4>
-      <!-- Validations -->
-      <div class="validations">
-        {% with errors = get_flashed_messages(category_filter=["sent"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-success">{{ msg }}</small>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-  
-        {% with errors = get_flashed_messages(category_filter=["short-text"]) %}
-          {% if errors %}
-            {%- for msg in errors %}
-              <small class="text-warning">{{ msg }}</small>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </div>
-
-      {% for user in users: %}
-      <form action="/send" method="POST">
-        <div class="form-group">
-          <label for="message-{{ user['id'] }}">{{user['first_name']}}</label>
-          <textarea class="form-control" name="sent_message" id="message-{{ user['id'] }}" rows="2"></textarea>
-          <input type="hidden" name="sender_id" value="{{ session['logged_in']['user_id'] }}">
-          <input type="hidden" name="recipient_id" value="{{ user['id'] }}">
-          <input type="submit" class="btn btn-success btn-sm mt-2">
+    <div class="row">
+      <!-- Left Screen -->
+      <div class="left-pane-messages col-xs-6 col-md-6">
+        <h4><span class="text-success">{{ session['logged_in']['messages_rec'] }}</span>
+          Message(s) for You</h4>
+        <div class="validations">
+          {% with errors = get_flashed_messages(category_filter=["message-delete"]) %}
+            {% if errors %}
+              {%- for msg in errors %}
+                <small class="text-danger">{{ msg }}</small>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
         </div>
-      </form>
-      {% endfor %}
+        {% for message in messages: %}
+        <div class="container row">
+          <div class="form-group d-inline col-8">
+            <p class="">{{ message['first_name'] }} said 
+              <span class="text-info">({{ message['created_at'] }}):</span>
+            </p>
+            <p class="ml-4">"{{ message['message'] }}"</p>
+          </div>  
+          <!-- <a href="#" class="fas fa-reply d-inline fa-2x text-secondary col-1 mt-4"></a> -->
+          <a href="/delete-message/{{ message['id'] }}" class="fas fa-trash-alt d-inline fa-2x text-danger col-4 mt-4"></a>
+        </div>
+        {% endfor %}
+      </div> <!-- End of Left Pane-->
 
-    </div>
-  </div>
+      <!-- Right Screen -->
+      <div class="right-pane-friends col-xs-6 col-md-6">
+        <h4>Send Messages</h4>
+        <!-- Validations -->
+        <div class="validations">
+          {% with errors = get_flashed_messages(category_filter=["sent"]) %}
+            {% if errors %}
+              {%- for msg in errors %}
+                <small class="text-success">{{ msg }}</small>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+    
+          {% with errors = get_flashed_messages(category_filter=["short-text"]) %}
+            {% if errors %}
+              {%- for msg in errors %}
+                <small class="text-warning">{{ msg }}</small>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+  
+        {% for user in users: %}
+        <form action="/send" method="POST">
+          <div class="form-group">
+            <label for="message-{{ user['id'] }}">{{user['first_name']}}</label>
+            <textarea class="form-control" name="sent_message" id="message-{{ user['id'] }}" rows="2"></textarea>
+            <input type="hidden" name="sender_id" value="{{ session['logged_in']['user_id'] }}">
+            <input type="hidden" name="recipient_id" value="{{ user['id'] }}">
+            <input type="submit" class="btn btn-success btn-sm mt-2">
+          </div>
+        </form>
+        {% endfor %}
+  
+      </div> <!-- End of Right Pane-->
+    </div> <!-- End of Row-->
+  </div> <!-- End of Container-->
 </body>
 </html>
